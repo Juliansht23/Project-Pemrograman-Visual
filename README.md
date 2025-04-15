@@ -14,3 +14,6 @@ Keunggulan SiPadi:
 🐛 Pencegahan Dini OPT – Mengurangi risiko gagal panen akibat hama dan penyakit.
 📊 Berbasis Data & AI – Rekomendasi cerdas berdasarkan data pertanian yang akurat.
 🔔 Notifikasi Real-time – Petani tidak akan lupa jadwal pemupukan dan penyemprotan.
+
+# Desain Interface
+https://www.figma.com/proto/kNiCzJb3Lekz8B6pKHqadm/0214_3A_Julianto-Aji-Milanesta?node-id=3-1920&t=FRF4CkoxraGjyJmL-1
