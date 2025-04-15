@@ -16,4 +16,4 @@ Keunggulan SiPadi:
 🔔 Notifikasi Real-time – Petani tidak akan lupa jadwal pemupukan dan penyemprotan.
 
 # Desain Interface
-https://www.figma.com/proto/kNiCzJb3Lekz8B6pKHqadm/0214_3A_Julianto-Aji-Milanesta?node-id=3-1920&t=FRF4CkoxraGjyJmL-1
+https://www.figma.com/design/kNiCzJb3Lekz8B6pKHqadm/0214_3A_Julianto-Aji-Milanesta?node-id=0-1&m=dev&t=BkP18JSifcO4unMl-1
