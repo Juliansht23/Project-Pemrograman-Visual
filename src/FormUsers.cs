@@ -1,202 +1,194 @@
-// using System;
-// using System.Collections.Generic;
-// using System.Drawing;
-// using System.Windows.Forms;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
 
-// namespace SRC
-// {
-//     public partial class FormUsers : Form
-//     {
-//         private DataGridView? dgv;
+namespace src
+{
+    public partial class FormUsers : Form
+    {
+        private DataGridView? dgv;
 
-        
-//         public FormUsers()
-//         {
-//             SetupUI();
-//             LoadData();
-//         }
+        public FormUsers()
+        {
+            SetupUI();
+            LoadData();
+        }
 
-//         private void SetupUI()
-//         {
-//             this.Text = "Users Management";
-//             this.Size = new Size(800, 500);
-//             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-//             this.MaximizeBox = false;
+        private void SetupUI()
+        {
+            this.Text = "Manajemen Pengguna";
+            this.Size = new Size(700, 500);
+            this.FormBorderStyle = FormBorderStyle.FixedSingle;
+            this.MaximizeBox = true;
+            this.WindowState = FormWindowState.Maximized;
 
-//             TableLayoutPanel layout = new TableLayoutPanel
-//             {
-//                 Dock = DockStyle.Fill,
-//                 RowCount = 2,
-//                 ColumnCount = 1
-//             };
-//             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
-//             layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
-//             this.Controls.Add(layout);
+            TableLayoutPanel layout = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                RowCount = 2,
+                ColumnCount = 1
+            };
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
+            layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            this.Controls.Add(layout);
 
-//             // Panel tombol
-//             Panel panelTop = new Panel
-//             {
-//                 Dock = DockStyle.Fill,
-//                 BackColor = Color.FromArgb(240, 240, 240),
-//                 Padding = new Padding(10)
-//             };
-//             layout.Controls.Add(panelTop, 0, 0);
+            Panel panelTop = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(240, 240, 240),
+                Padding = new Padding(10)
+            };
+            layout.Controls.Add(panelTop, 0, 0);
 
-//             FlowLayoutPanel buttonPanel = new FlowLayoutPanel
-//             {
-//                 Dock = DockStyle.Right,
-//                 FlowDirection = FlowDirection.LeftToRight,
-//                 WrapContents = false,
-//                 AutoSize = true
-//             };
-//             panelTop.Controls.Add(buttonPanel);
+            FlowLayoutPanel buttonPanel = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Right,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                AutoSize = true
+            };
+            panelTop.Controls.Add(buttonPanel);
 
-//             // Tombol
-//             Button btnAdd = CreateButton("Tambah", BtnAdd_Click);
-//             Button btnEdit = CreateButton("Edit", BtnEdit_Click);
-//             Button btnDelete = CreateButton("Hapus", BtnDelete_Click);
+            Button btnAdd = CreateButton("Tambah", BtnAdd_Click);
+            buttonPanel.Controls.Add(btnAdd);
 
-//             buttonPanel.Controls.Add(btnAdd);
-//             buttonPanel.Controls.Add(btnEdit);
-//             buttonPanel.Controls.Add(btnDelete);
+            Button btnEdit = CreateButton("Edit", BtnEdit_Click);
+            buttonPanel.Controls.Add(btnEdit);
 
-//             // DataGridView
-//             dgv = new DataGridView
-//             {
-//                 Dock = DockStyle.Fill,
-//                 AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
-//                 AllowUserToAddRows = false,
-//                 ReadOnly = true,
-//                 SelectionMode = DataGridViewSelectionMode.FullRowSelect,
-//                 RowTemplate = { Height = 35 },
-//                 Font = new Font("Segoe UI", 10),
-//                 ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
-//                 {
-//                     BackColor = Color.FromArgb(200, 200, 200),
-//                     Font = new Font("Segoe UI", 10, FontStyle.Bold),
-//                     Alignment = DataGridViewContentAlignment.MiddleCenter
-//                 },
-//                 EnableHeadersVisualStyles = false,
-//                 AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle
-//                 {
-//                     BackColor = Color.FromArgb(245, 245, 245)
-//                 }
-//             };
-//             layout.Controls.Add(dgv, 0, 1);
+            Button btnDelete = CreateButton("Hapus", BtnDelete_Click);
+            buttonPanel.Controls.Add(btnDelete);
 
-//             // Kolom tabel
-//             dgv.Columns.Add("usersId", "Users ID");
-//             dgv.Columns.Add("rumahId", "Rumah ID");
-//             dgv.Columns.Add("nama", "nama");
-//             dgv.Columns.Add("usia", "Usia");
-//             dgv.Columns.Add("jenis_kelamin", "Jenis Kelamin");
-//             dgv.Columns.Add("telepon", "No Telf");
-//         }
+            dgv = new DataGridView
+            {
+                Dock = DockStyle.Fill,
+                AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill,
+                AllowUserToAddRows = false,
+                ReadOnly = true,
+                SelectionMode = DataGridViewSelectionMode.FullRowSelect,
+                RowTemplate = { Height = 35 },
+                Font = new Font("Segoe UI", 10),
+                ColumnHeadersDefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.FromArgb(200, 200, 200),
+                    Font = new Font("Segoe UI", 10, FontStyle.Bold),
+                    Alignment = DataGridViewContentAlignment.MiddleCenter
+                },
+                EnableHeadersVisualStyles = false,
+                AlternatingRowsDefaultCellStyle = new DataGridViewCellStyle
+                {
+                    BackColor = Color.FromArgb(245, 245, 245)
+                }
+            };
+            layout.Controls.Add(dgv, 0, 1);
 
-//         private Button CreateButton(string text, EventHandler onClick)
-//         {
-//             Button btn = new Button
-//             {
-//                 Text = text,
-//                 Size = new Size(80, 30),
-//                 BackColor = Color.LightBlue,
-//                 FlatStyle = FlatStyle.Flat,
-//                 Font = new Font("Segoe UI", 10, FontStyle.Regular),
-//                 Margin = new Padding(5)
-//             };
-//             btn.FlatAppearance.BorderSize = 0;
-//             btn.Click += onClick;
+            dgv?.Columns.Add("usersId", "ID");
+            dgv?.Columns.Add("rumahId", "Rumah ID");
+            dgv?.Columns.Add("nama", "Nama");
+            dgv?.Columns.Add("usia", "Usia");
+            dgv?.Columns.Add("jenis_kelamin", "Jenis Kelamin");
+            dgv?.Columns.Add("telepon", "Telepon");
+        }
 
-//             btn.MouseEnter += (s, e) => btn.BackColor = Color.DodgerBlue;
-//             btn.MouseLeave += (s, e) => btn.BackColor = Color.LightBlue;
+        private Button CreateButton(string text, EventHandler onClick)
+        {
+            Button btn = new Button
+            {
+                Text = text,
+                Size = new Size(80, 30),
+                BackColor = Color.LightBlue,
+                FlatStyle = FlatStyle.Flat,
+                Font = new Font("Segoe UI", 10),
+                Margin = new Padding(5)
+            };
+            btn.FlatAppearance.BorderSize = 0;
+            btn.Click += onClick;
 
-//             return btn;
-//         }
+            btn.MouseEnter += (s, e) => btn.BackColor = Color.DodgerBlue;
+            btn.MouseLeave += (s, e) => btn.BackColor = Color.LightBlue;
 
-//         private void LoadData()
-//         {
-//             if (dgv == null) return;
-//             dgv.Rows.Clear();
+            return btn;
+        }
 
-//             List<DatabaseHelper.Inventory> list = DatabaseHelper.GetInventory();
-//             foreach (var inv in list)
-//             {
-//                 dgv.Rows.Add(inv.InventoryId, inv.ProductId, inv.Quantity, inv.Date, inv.Type);
-//             }
-//         }
+        private void LoadData()
+        {
+            dgv?.Rows.Clear();
+            var users = DatabaseHelper.GetUsers();
 
-//         private void BtnAdd_Click(object? sender, EventArgs e)
-//         {
-//             using InventoryFormDialog dialog = new InventoryFormDialog();
-//             if (dialog.ShowDialog() == DialogResult.OK)
-//             {
-//                 DatabaseHelper.InsertInventory(new DatabaseHelper.Inventory
-//                 {
-//                     // ProductId = dialog.ProductId,
-//                     ProductId = int.TryParse(dialog.ProductId, out int p) ? p : 0,
-//                     Quantity = int.TryParse(dialog.Quantity, out int q) ? q : 0,
-//                     Date = dialog.Date,
-//                     Type = dialog.Type
-//                 });
-//                 LoadData();
-//             }
-//         }
+            foreach (var u in users)
+            {
+                dgv?.Rows.Add(u.UsersId, u.RumahId, u.Nama, u.Usia, u.JenisKelamin, u.Telepon);
+            }
+        }
 
-//         private void BtnEdit_Click(object? sender, EventArgs e)
-//         {
-//             if (dgv != null && dgv.SelectedRows.Count > 0)
-//             {
-//                 var row = dgv.SelectedRows[0];
+        private void BtnAdd_Click(object? sender, EventArgs e)
+        {
+            using var dialog = new UsersFormDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                DatabaseHelper.InsertUser(new DatabaseHelper.Users
+                {
+                    RumahId = dialog.RumahId,
+                    Nama = dialog.Nama,
+                    Usia = dialog.Usia,
+                    JenisKelamin = dialog.JenisKelamin,
+                    Telepon = dialog.Telepon
+                });
+                LoadData();
+            }
+        }
 
-//                 InventoryFormDialog dialog = new InventoryFormDialog
-//                 {
-//                     InventoryId = row.Cells["inventoryId"]?.Value?.ToString(),
-//                     ProductId = row.Cells["productId"]?.Value?.ToString(),
-//                     Quantity = row.Cells["quantity"]?.Value?.ToString(),
-//                     Date = row.Cells["date"]?.Value?.ToString(),
-//                     Type = row.Cells["type"]?.Value?.ToString()
-//                 };
+        private void BtnEdit_Click(object? sender, EventArgs e)
+        {
+            if (dgv != null && dgv.SelectedRows.Count > 0)
+            {
+                var row = dgv.SelectedRows[0];
+                var dialog = new UsersFormDialog
+                {
+                    RumahId = int.TryParse(row.Cells["rumahId"].Value?.ToString(), out var rId) ? rId : 0,
+                    Nama = row.Cells["nama"].Value?.ToString(),
+                    Usia = row.Cells["usia"].Value?.ToString(),
+                    JenisKelamin = row.Cells["jenis_kelamin"].Value?.ToString(),
+                    Telepon = row.Cells["telepon"].Value?.ToString()
+                };
 
-//                 if (dialog.ShowDialog() == DialogResult.OK)
-//                 {
-//                     DatabaseHelper.UpdateInventory(new DatabaseHelper.Inventory
-//                     {
-//                         InventoryId = int.TryParse(dialog.InventoryId, out int id) ? id : 0,
-//                         // ProductId = dialog.ProductId,
-//                         ProductId = int.TryParse(dialog.ProductId, out int p) ? p : 0,
-//                         Quantity = int.TryParse(dialog.Quantity, out int q) ? q : 0,
-//                         Date = dialog.Date,
-//                         Type = dialog.Type
-//                     });
-//                     LoadData();
-//                 }
-//             }
-//             else
-//             {
-//                 MessageBox.Show("Pilih baris yang mau diedit.");
-//             }
-//         }
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    int.TryParse(row.Cells["usersId"].Value?.ToString(), out var id);
+                    DatabaseHelper.UpdateUser(new DatabaseHelper.Users
+                    {
+                        UsersId = id,
+                        RumahId = dialog.RumahId,
+                        Nama = dialog.Nama,
+                        Usia = dialog.Usia,
+                        JenisKelamin = dialog.JenisKelamin,
+                        Telepon = dialog.Telepon
+                    });
+                    LoadData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Pilih satu baris yang mau diedit.");
+            }
+        }
 
-//         private void BtnDelete_Click(object? sender, EventArgs e)
-//         {
-//             if (dgv != null && dgv.SelectedRows.Count > 0)
-//             {
-//                 var row = dgv.SelectedRows[0];
-//                 var confirm = MessageBox.Show("Yakin mau hapus?", "Konfirmasi", MessageBoxButtons.YesNo);
-//                 if (confirm == DialogResult.Yes)
-//                 {
-//                     string? idStr = row.Cells["inventoryId"]?.Value?.ToString();
-//                     if (int.TryParse(idStr, out int id))
-//                     {
-//                         DatabaseHelper.DeleteInventory(id);
-//                         LoadData();
-//                     }
-//                 }
-//             }
-//             else
-//             {
-//                 MessageBox.Show("Pilih baris yang mau dihapus.");
-//             }
-//         }
-//     }
-// }
+        private void BtnDelete_Click(object? sender, EventArgs e)
+        {
+            if (dgv != null && dgv.SelectedRows.Count > 0)
+            {
+                var row = dgv.SelectedRows[0];
+                var confirm = MessageBox.Show("Yakin mau hapus?", "Konfirmasi", MessageBoxButtons.YesNo);
+                if (confirm == DialogResult.Yes)
+                {
+                    int.TryParse(row.Cells["usersId"].Value?.ToString(), out var id);
+                    DatabaseHelper.DeleteUser(id);
+                    LoadData();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Pilih satu baris yang mau dihapus.");
+            }
+        }
+    }
+}

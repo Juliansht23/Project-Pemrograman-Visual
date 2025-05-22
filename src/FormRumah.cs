@@ -11,15 +11,16 @@ namespace src
         public FormRumah()
         {
             SetupUI();
-            LoadData(); // Load from database
+            LoadData();
         }
 
         private void SetupUI()
         {
-            this.Text = "Rumah Management";
+            this.Text = "Manajemen Rumah";
             this.Size = new Size(700, 500);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
+            this.MaximizeBox = true;
+            this.WindowState = FormWindowState.Maximized;
 
             TableLayoutPanel layout = new TableLayoutPanel
             {
@@ -27,7 +28,7 @@ namespace src
                 RowCount = 2,
                 ColumnCount = 1
             };
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));
+            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 200));
             layout.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
             this.Controls.Add(layout);
 
@@ -35,7 +36,8 @@ namespace src
             {
                 Dock = DockStyle.Fill,
                 BackColor = Color.FromArgb(240, 240, 240),
-                Padding = new Padding(10)
+                // Padding = new Padding(10),
+                // Margin = new Padding(0, 0, 0, 10) // Tambahkan jarak bawah 10 pixel
             };
             layout.Controls.Add(panelTop, 0, 0);
 
@@ -48,14 +50,9 @@ namespace src
             };
             panelTop.Controls.Add(buttonPanel);
 
-            Button btnAdd = CreateButton("Tambah", BtnAdd_Click);
-            buttonPanel.Controls.Add(btnAdd);
-
-            Button btnEdit = CreateButton("Edit", BtnEdit_Click);
-            buttonPanel.Controls.Add(btnEdit);
-
-            Button btnDelete = CreateButton("Hapus", BtnDelete_Click);
-            buttonPanel.Controls.Add(btnDelete);
+            buttonPanel.Controls.Add(CreateButton("Tambah", BtnAdd_Click));
+            buttonPanel.Controls.Add(CreateButton("Edit", BtnEdit_Click));
+            buttonPanel.Controls.Add(CreateButton("Hapus", BtnDelete_Click));
 
             dgv = new DataGridView
             {
@@ -80,9 +77,9 @@ namespace src
             };
             layout.Controls.Add(dgv, 0, 1);
 
-            dgv?.Columns.Add("rumahId", "Rumah ID");
-            dgv?.Columns.Add("alamat", "Alamat");
-            dgv?.Columns.Add("status", "Status");
+            dgv.Columns.Add("rumahId", "ID");
+            dgv.Columns.Add("alamat", "Alamat");
+            dgv.Columns.Add("status", "Status");
         }
 
         private Button CreateButton(string text, EventHandler onClick)
@@ -108,12 +105,11 @@ namespace src
         private void LoadData()
         {
             dgv?.Rows.Clear();
-            var rumah = Database.GetRumah();
+            var rumahList = DatabaseHelper.GetRumah();
 
-            foreach (var r in rumah)
+            foreach (var r in rumahList)
             {
-                dgv?.Rows.Add(r.RumahId, r.Alamat ?? "", r.Status ?? "");
-
+                dgv?.Rows.Add(r.RumahId, r.Alamat, r.Status);
             }
         }
 
@@ -122,10 +118,10 @@ namespace src
             using RumahFormDialog dialog = new RumahFormDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                Database.InsertRumah(new Database.Rumah
+                DatabaseHelper.InsertRumah(new DatabaseHelper.Rumah
                 {
                     Alamat = dialog.Alamat,
-                    Status = dialog.Status,
+                    Status = dialog.Status
                 });
 
                 LoadData();
@@ -136,22 +132,22 @@ namespace src
         {
             if (dgv != null && dgv.SelectedRows.Count > 0)
             {
-                var selectedRow = dgv.SelectedRows[0];
-                if (selectedRow != null)
+                var row = dgv.SelectedRows[0];
+                RumahFormDialog dialog = new RumahFormDialog
                 {
-                    RumahFormDialog dialog = new RumahFormDialog
-                    {
-                        // ProductId = selectedRow.Cells["productId"]?.Value?.ToString(),
-                        Alamat = selectedRow.Cells["alamat"]?.Value?.ToString(),
-                        Status = selectedRow.Cells["status"]?.Value?.ToString(),
-                    };
+                    Alamat = row.Cells["alamat"]?.Value?.ToString(),
+                    Status = row.Cells["status"]?.Value?.ToString()
+                };
 
-                    if (dialog.ShowDialog() == DialogResult.OK)
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (int.TryParse(row.Cells["rumahId"].Value?.ToString(), out int id))
                     {
-                        Database.UpdateRumah(new Database.Rumah
+                        DatabaseHelper.UpdateRumah(new DatabaseHelper.Rumah
                         {
+                            RumahId = id,
                             Alamat = dialog.Alamat,
-                            Status = dialog.Status,
+                            Status = dialog.Status
                         });
 
                         LoadData();
@@ -160,7 +156,7 @@ namespace src
             }
             else
             {
-                MessageBox.Show("Pilih satu baris yang mau diedit.");
+                MessageBox.Show("Pilih salah satu baris untuk diedit.");
             }
         }
 
@@ -168,31 +164,21 @@ namespace src
         {
             if (dgv != null && dgv.SelectedRows.Count > 0)
             {
-                var selectedRow = dgv.SelectedRows[0];
-                if (selectedRow != null)
+                var row = dgv.SelectedRows[0];
+                var confirm = MessageBox.Show("Yakin ingin menghapus?", "Konfirmasi", MessageBoxButtons.YesNo);
+                if (confirm == DialogResult.Yes)
                 {
-                    var confirm = MessageBox.Show("Yakin mau hapus?", "Konfirmasi", MessageBoxButtons.YesNo);
-                    if (confirm == DialogResult.Yes)
+                    if (int.TryParse(row.Cells["rumahId"].Value?.ToString(), out int id))
                     {
-                        string? rumahId = selectedRow.Cells["rumahId"]?.Value?.ToString();
-                        // if (!string.IsNullOrEmpty(productId))
-                        // {
-                        //     Database.DeleteProduct(productId);
-                        //     LoadData();
-                        // }
-                        if (int.TryParse(rumahId, out int id))
-                        {
-                            Database.DeleteRumah(id);
-                            LoadData();
-                        }
+                        DatabaseHelper.DeleteRumah(id);
+                        LoadData();
                     }
                 }
             }
             else
             {
-                MessageBox.Show("Pilih satu baris yang mau dihapus.");
+                MessageBox.Show("Pilih salah satu baris untuk dihapus.");
             }
         }
-
     }
 }

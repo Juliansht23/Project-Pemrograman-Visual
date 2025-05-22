@@ -10,7 +10,6 @@ namespace src
         private TextBox? txtAlamat, txtStatus;
         private Button? btnSave;
 
-
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string? Alamat { get; set; }
@@ -19,7 +18,6 @@ namespace src
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string? Status { get; set; }
 
-
         public RumahFormDialog()
         {
             SetupUI();
@@ -27,8 +25,8 @@ namespace src
 
         private void SetupUI()
         {
-            this.Text = "Item Detail";
-            this.Size = new Size(350, 300);
+            this.Text = "Detail Rumah";
+            this.Size = new Size(350, 250);
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.StartPosition = FormStartPosition.CenterParent;
@@ -36,7 +34,7 @@ namespace src
             TableLayoutPanel layout = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
-                RowCount = 5,
+                RowCount = 3,
                 ColumnCount = 2,
                 Padding = new Padding(20),
                 AutoSize = true
@@ -45,14 +43,13 @@ namespace src
             layout.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 70));
             this.Controls.Add(layout);
 
-
-            layout.Controls.Add(new Label { Text = "Alamat", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 1);
+            layout.Controls.Add(new Label { Text = "Alamat", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 0);
             txtAlamat = new TextBox { Dock = DockStyle.Fill };
-            layout.Controls.Add(txtAlamat, 1, 1);
+            layout.Controls.Add(txtAlamat, 1, 0);
 
-            layout.Controls.Add(new Label { Text = "Status", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 2);
+            layout.Controls.Add(new Label { Text = "Status", Anchor = AnchorStyles.Left, AutoSize = true }, 0, 1);
             txtStatus = new TextBox { Dock = DockStyle.Fill };
-            layout.Controls.Add(txtStatus, 1, 2);
+            layout.Controls.Add(txtStatus, 1, 1);
 
             btnSave = new Button
             {
@@ -73,11 +70,9 @@ namespace src
             panelButton.Controls.Add(btnSave);
             btnSave.Location = new Point((panelButton.Width - btnSave.Width) / 2, (panelButton.Height - btnSave.Height) / 2);
             btnSave.Anchor = AnchorStyles.None;
-            layout.Controls.Add(panelButton, 0, 4);
+            layout.Controls.Add(panelButton, 0, 2);
             layout.SetColumnSpan(panelButton, 2);
 
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
-            layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 40));
             layout.RowStyles.Add(new RowStyle(SizeType.Absolute, 60));

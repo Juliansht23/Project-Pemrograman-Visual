@@ -8,14 +8,11 @@ namespace src
         public Form1()
         {
             InitializeComponent();
-            // this.MaximizeBox = false;
-
+            this.MaximizeBox = false;
             this.FormBorderStyle = FormBorderStyle.FixedSingle;
-
-            this.Size = new Size(900, 600);
+            this.Size = new Size(1400, 1000);
             SetupUI();
         }
-
 
         private void SetupUI()
         {
@@ -31,7 +28,7 @@ namespace src
             // Icon toko (kiri)
             PictureBox shopIcon = new PictureBox
             {
-                ImageLocation = "./assets/home.jpeg",
+                ImageLocation = "./assets/store.png",
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Size = new Size(50, 50),
                 Location = new Point(10, 15)
@@ -41,7 +38,7 @@ namespace src
             // Icon profile (kanan)
             PictureBox profileIcon = new PictureBox
             {
-                ImageLocation = "./assets/user.jpeg",
+                ImageLocation = "./assets/user_1.png",
                 SizeMode = PictureBoxSizeMode.Zoom,
                 Size = new Size(40, 40),
                 Location = new Point(header.Width - 60, 20),
@@ -84,15 +81,13 @@ namespace src
                 );
             };
 
-
             this.Controls.Add(containerPanel);
 
-            // Card Inventory
-            panelCards.Controls.Add(CreateCard("Rumah", Color.LightBlue, Rumah_Click));
+            // Card Rumah
+            panelCards.Controls.Add(CreateCard("Rumah", Color.LightSkyBlue, RumahCard_Click));
 
-            // Card Product
-            // panelCards.Controls.Add(CreateCard("Users", Color.LightGreen, Users_Click));
-
+            // Card Users
+            panelCards.Controls.Add(CreateCard("Users", Color.LightGoldenrodYellow, UsersCard_Click));
         }
 
         private Panel CreateCard(string title, Color color, EventHandler onClick)
@@ -122,17 +117,17 @@ namespace src
             return card;
         }
 
-        private void Rumah_Click(object? sender, EventArgs e)
+        private void RumahCard_Click(object? sender, EventArgs e)
         {
             FormRumah rumahForm = new FormRumah();
             rumahForm.ShowDialog();
         }
 
-        // private void Users_Click(object? sender, EventArgs e)
-        // {
-        //     FormUsers usersForm = new FormUsers();
-        //     usersForm.ShowDialog();
-        // }
-
+        private void UsersCard_Click(object? sender, EventArgs e)
+        {
+            FormUsers usersForm = new FormUsers();
+            usersForm.ShowDialog();
+        }
     }
 }
+
